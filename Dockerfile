@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath gd
 
+# Cria o banco SQLite no diretório gravável
+RUN mkdir -p /tmp && touch /tmp/database.sqlite && chmod 666 /tmp/database.sqlite
+
 # Habilita mod_rewrite (necessário para rotas do Laravel)
 RUN a2enmod rewrite
 
