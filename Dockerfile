@@ -28,6 +28,13 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 # Ajusta o DocumentRoot para a pasta public
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
+# 🔧 Ativa o uso do .htaccess dentro de /public (ESSENCIAL)
+RUN echo '<Directory /var/www/html/public>\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' > /etc/apache2/conf-available/laravel.conf \
+    && a2enconf laravel
+
 # Expõe a porta 10000 (Render exige isso)
 EXPOSE 10000
 
