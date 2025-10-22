@@ -10,7 +10,7 @@ class PaymentController extends Controller
 {
     public function create(Request $request)
     {
-        $baseUrl = "https://aleen-streamiest-softheartedly.ngrok-free.dev";
+        $baseUrl = env('APP_URL');
         MercadoPagoConfig::setAccessToken(config('services.mercadopago.token'));
 
         $tipo = $request->input('tipo', 'documento');
