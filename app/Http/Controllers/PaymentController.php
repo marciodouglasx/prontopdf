@@ -14,7 +14,7 @@ class PaymentController extends Controller
         MercadoPagoConfig::setAccessToken(config('services.mercadopago.token'));
 
         $tipo = $request->input('tipo', 'documento');
-        $valor = (float) $request->input('valor', 0.50);
+        $valor = (float) $request->input('valor', 1.00);
 
         $bakc_urls = [
             "success" => url("/pagamento/sucesso?tipo={$tipo}"),
