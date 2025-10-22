@@ -11,7 +11,6 @@ class PaymentController extends Controller
 {
     public function create(Request $request)
     {
-        $baseUrl = env('APP_URL');
         MercadoPagoConfig::setAccessToken(config('services.mercadopago.token'));
 
         $tipo = $request->input('tipo', 'documento');
@@ -32,9 +31,9 @@ class PaymentController extends Controller
                     "installments" => 1              // PIX não parcelado
                 ],
                 "back_urls" => [
-                    "success" => $baseUrl . "/pagamento/sucesso?tipo={$tipo}",
-                    "failure" => $baseUrl . "/pagamento/falha",
-                    "pending" => $baseUrl . "/pagamento/pendente",
+                    "success" => url("/pagamento/sucesso?tipo={$tipo}"),
+                    "failure" => url( "/pagamento/falha"),
+                    "pending" => url("/pagamento/pendente"),
                 ],
                 "auto_return" => "approved"
             ]);
