@@ -16,6 +16,12 @@ class PaymentController extends Controller
         $tipo = $request->input('tipo', 'documento');
         $valor = (float) $request->input('valor', 0.50);
 
+        $bakc_urls = [
+            "success" => url("/pagamento/sucesso?tipo={$tipo}"),
+            "failure" => url( "/pagamento/falha"),
+            "pending" => url("/pagamento/pendente"),
+        ];
+
         $client = new PreferenceClient();
         try {
             $preference = $client->create([
@@ -30,11 +36,7 @@ class PaymentController extends Controller
                     "excluded_payment_types" => [],   // não excluir nenhum tipo
                     "installments" => 1              // PIX não parcelado
                 ],
-                "back_urls" => [
-                    "success" => url("/pagamento/sucesso?tipo={$tipo}"),
-                    "failure" => url( "/pagamento/falha"),
-                    "pending" => url("/pagamento/pendente"),
-                ],
+                "back_urls" => $bakc_urls,
                 "auto_return" => "approved"
             ]);
 
@@ -43,6 +45,7 @@ class PaymentController extends Controller
             // 🔍 Mostra resposta completa da API
             return response()->json([
                 'message' => 'Erro na API do Mercado Pago',
+                'urls' => $bakc_urls,
                 'details' => $e->getApiResponse()->getContent()
             ], 400);
         } catch (\Exception $e) {
